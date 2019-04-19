@@ -30,18 +30,58 @@ def getBoardCopy(board):
         boardCopy.append(i)
     return boardCopy
 
-def computerAutoPlay(computerChoice, currentBoard):
+def computerAutoPlay(currentBoard):
     print()
     print('Computer choices')
 
-    #Check win
-    boardCopy = getBoardCopy(currentBoard)
+    # Check win
+
     for index in range(1, 10):
+        boardCopy = getBoardCopy(currentBoard)
         if boardCopy[int(index) - 1] == ' ':
             boardCopy[int(index) - 1] = computerChoice
             win, winner = checkWin(boardCopy)
             if win:
                 currentBoard[int(index) - 1] = computerChoice
+                return True
+
+    # Check lose
+    for index in range(1, 10):
+        boardCopy = getBoardCopy(currentBoard)
+        if boardCopy[int(index) - 1] == ' ':
+            boardCopy[int(index) - 1] = yourChoice
+            win, winner = checkWin(boardCopy)
+            if win:
+                currentBoard[int(index) - 1] = computerChoice
+                return True
+
+    # Check center
+    if currentBoard[4] == ' ':
+        currentBoard[4] = computerChoice
+        return True
+
+    # Check corner
+
+    for element in corner:
+        print(element)
+        if currentBoard[int(element)] != ' ':
+            corner.remove(element)
+
+    if len(corner) > 0:
+        currentBoard[int(random.choice(corner))] = computerChoice
+        return True
+
+    # Check Column
+
+    for element in column:
+        print(element)
+        if currentBoard[int(element)] != ' ':
+            column.remove(element)
+
+    if len(column) > 0:
+        currentBoard[int(random.choice(column))] = computerChoice
+        return True
+
     print()
 
 def youPlay(yourChoice, currentBoard):
@@ -72,7 +112,7 @@ def checkWin(Board):
         return True, Board[2]
     elif (Board[0] == Board[4]) and (Board[4] == Board[8]) and Board[0] != ' ':
         return True, Board[0]
-    elif (Board[2] == Board[4]) and (Board[6] == Board[8]) and Board[2] != ' ':
+    elif (Board[2] == Board[4]) and (Board[4] == Board[6]) and Board[2] != ' ':
         return True, Board[2]
     else:
         return False, ''
@@ -80,10 +120,13 @@ def checkWin(Board):
 yourChoice = ''
 computerChoice = ''
 currentBoard = []
-
+moves = 0
+corner = [0, 2, 6, 8]
+column = [1, 3, 5, 7]
 def clearBoard():
     for iniData in range(9):
         currentBoard.append(' ')
+
 
 print('TIC TAC TOE')
 
@@ -107,32 +150,43 @@ while True:
     if firstPlayer == 0:
         youPlay(yourChoice, currentBoard)
         firstPlayer = 1
+        moves += 1
     else:
-        computerAutoPlay(computerChoice, currentBoard)
+        computerAutoPlay(currentBoard)
         firstPlayer = 0
+        moves += 1
 
     win, winner = checkWin(currentBoard)
-    if win:
+    if win or moves == 8:
         if yourChoice == winner:
             print('You are Victory!!!')
+            firstPlayer = 0
             print()
             showBoard(currentBoard)
         else:
             print('Computer is Victory!!!')
+            firstPlayer = 1
             print()
             showBoard(currentBoard)
             print()
+
+        if moves == 8:
+            print('Full option')
 
         while True:
             print('Do you want to play again? (Yes or No)')
             playAgain = input().lower()
             if playAgain.startswith('y'):
-                yourChoice = ''
-                computerChoice = ''
+                currentBoard = []
                 clearBoard()
+                moves = 0
+                corner = [0, 2, 6, 8]
+                column = [1, 3, 5, 7]
                 break
             elif playAgain.startswith('n'):
                 sys.exit()
+
+
 
 
 
