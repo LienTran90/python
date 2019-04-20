@@ -11,17 +11,17 @@ def choiceFirstPlayer():
     return randomChoice
 
 def showBoard(currentBoard):
-    row1 = ' ' + currentBoard[0] + ' | ' + currentBoard[1] + ' | ' + currentBoard[2]
 
-    print(row1)
+    row3 = ' ' + currentBoard[6] + ' | ' + currentBoard[7] + ' | ' + currentBoard[8]
+    print(row3)
     print('---+---+---')
 
     row2 = ' ' + currentBoard[3] + ' | ' + currentBoard[4] + ' | ' + currentBoard[5]
     print(row2)
     print('---+---+---')
 
-    row3 = ' ' + currentBoard[6] + ' | ' + currentBoard[7] + ' | ' + currentBoard[8]
-    print(row3)
+    row1 = ' ' + currentBoard[0] + ' | ' + currentBoard[1] + ' | ' + currentBoard[2]
+    print(row1)
 
 def getBoardCopy(board):
     # Make a copy of the board list and return it.
@@ -35,7 +35,6 @@ def computerAutoPlay(currentBoard):
     print('Computer choices')
 
     # Check win
-
     for index in range(1, 10):
         boardCopy = getBoardCopy(currentBoard)
         if boardCopy[int(index) - 1] == ' ':
@@ -61,28 +60,23 @@ def computerAutoPlay(currentBoard):
         return True
 
     # Check corner
-
-    for element in corner:
-        print(element)
-        if currentBoard[int(element)] != ' ':
-            corner.remove(element)
-
-    if len(corner) > 0:
-        currentBoard[int(random.choice(corner))] = computerChoice
-        return True
+    while len(corner) > 0:
+        enterKey = random.choice(corner)
+        if currentBoard[int(enterKey)] == ' ':
+            currentBoard[int(enterKey)] = computerChoice
+            return
+        else:
+            corner.remove(enterKey)
 
     # Check Column
+    while len(column) > 0:
+        enterKey = random.choice(column)
+        if currentBoard[int(enterKey)] == ' ':
+            currentBoard[int(enterKey)] = computerChoice
+            return
+        else:
+            column.remove(enterKey)
 
-    for element in column:
-        print(element)
-        if currentBoard[int(element)] != ' ':
-            column.remove(element)
-
-    if len(column) > 0:
-        currentBoard[int(random.choice(column))] = computerChoice
-        return True
-
-    print()
 
 def youPlay(yourChoice, currentBoard):
     while True:
@@ -121,12 +115,12 @@ yourChoice = ''
 computerChoice = ''
 currentBoard = []
 moves = 0
-corner = [0, 2, 6, 8]
-column = [1, 3, 5, 7]
+corner = [0,2,6,8]
+column = [1,3,5,7]
+
 def clearBoard():
     for iniData in range(9):
         currentBoard.append(' ')
-
 
 print('TIC TAC TOE')
 
@@ -146,18 +140,17 @@ clearBoard()
 while True:
 
     showBoard(currentBoard)
-
     if firstPlayer == 0:
         youPlay(yourChoice, currentBoard)
         firstPlayer = 1
-        moves += 1
+        moves = moves + 1
     else:
         computerAutoPlay(currentBoard)
         firstPlayer = 0
-        moves += 1
+        moves = moves + 1
 
     win, winner = checkWin(currentBoard)
-    if win or moves == 8:
+    if win:
         if yourChoice == winner:
             print('You are Victory!!!')
             firstPlayer = 0
@@ -169,10 +162,6 @@ while True:
             print()
             showBoard(currentBoard)
             print()
-
-        if moves == 8:
-            print('Full option')
-
         while True:
             print('Do you want to play again? (Yes or No)')
             playAgain = input().lower()
@@ -180,11 +169,31 @@ while True:
                 currentBoard = []
                 clearBoard()
                 moves = 0
-                corner = [0, 2, 6, 8]
-                column = [1, 3, 5, 7]
+                corner = [0,2,6,8]
+                column = [1,3,5,7]
                 break
             elif playAgain.startswith('n'):
                 sys.exit()
+
+    if moves == 9:
+        print()
+        showBoard(currentBoard)
+        print()
+        print('Full option')
+        while True:
+            print('Do you want to play again? (Yes or No)')
+            playAgain = input().lower()
+            if playAgain.startswith('y'):
+                currentBoard = []
+                clearBoard()
+                moves = 0
+                corner = [0,2,6,8]
+                column = [1,3,5,7]
+                break
+            elif playAgain.startswith('n'):
+                sys.exit()
+
+
 
 
 
