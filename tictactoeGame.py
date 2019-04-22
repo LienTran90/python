@@ -1,6 +1,7 @@
 import random
 import sys
 
+
 def choiceFirstPlayer():
     randomChoice = random.randint(0, 1)
     if randomChoice == 0:
@@ -9,6 +10,7 @@ def choiceFirstPlayer():
         print('Computer begins first')
     print()
     return randomChoice
+
 
 def showBoard(currentBoard):
 
@@ -23,12 +25,14 @@ def showBoard(currentBoard):
     row1 = ' ' + currentBoard[0] + ' | ' + currentBoard[1] + ' | ' + currentBoard[2]
     print(row1)
 
+
 def getBoardCopy(board):
     # Make a copy of the board list and return it.
     boardCopy = []
     for i in board:
         boardCopy.append(i)
     return boardCopy
+
 
 def computerAutoPlay(currentBoard):
     print()
@@ -91,6 +95,7 @@ def youPlay(yourChoice, currentBoard):
                 print('This position already has value')
     print()
 
+
 def checkWin(Board):
     if (Board[0] == Board[1]) and (Board[1] == Board[2]) and Board[0] != ' ':
         return True, Board[0]
@@ -111,6 +116,7 @@ def checkWin(Board):
     else:
         return False, ''
 
+
 yourChoice = ''
 computerChoice = ''
 currentBoard = []
@@ -118,9 +124,11 @@ moves = 0
 corner = [0,2,6,8]
 column = [1,3,5,7]
 
+
 def clearBoard():
     for iniData in range(9):
         currentBoard.append(' ')
+
 
 print('TIC TAC TOE')
 

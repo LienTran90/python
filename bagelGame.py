@@ -1,0 +1,5 @@
+import random
+
+GUESS_COUNT = 10
+DEFAULT_DIGIT = 10
+SECRET_NUMBER = 3
