@@ -20,20 +20,20 @@ def checkInput():
         print('Guess secret Number :')
         inputNumber = input()
         numberList = list(inputNumber)
-        print(numberList)
         for index in range(3):
             if numberList[index] not in '0123456789':
                 return 0
 
-        return numberList
+        return inputNumber
 
 def tellClues(inputNumber,guessNumber):
     resultList = []
+    inputList = list(inputNumber)
     numberList = list(guessNumber)
     for index in range(3):
-        if inputNumber[index] == numberList[index]:
+        if inputList[index] == numberList[index]:
             resultList.append('Pico')
-        elif inputNumber[index] in numberList:
+        elif inputList[index] in numberList:
             resultList.append('Fermi')
 
     if len(resultList) == 0:
@@ -42,7 +42,7 @@ def tellClues(inputNumber,guessNumber):
         if checkGame:
             return ' '.join(resultList)
         else:
-            return random.shuffle(' '.join(resultList))
+            return ' '.join(resultList)
 
 difficulty = ''
 checkGame = True
@@ -66,6 +66,10 @@ print('Pico One digit is correct but in the wrong position.')
 print('Fermi One digit is correct and in the right position.')
 
 secretNumber = generateNumber()
+print(secretNumber + ' ẩn số')
 inputNumber = checkInput()
-tellClues(inputNumber, secretNumber)
+print(inputNumber)
+result =  tellClues(inputNumber, secretNumber)
+
+print (result)
 
