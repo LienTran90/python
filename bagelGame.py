@@ -1,4 +1,5 @@
 import random
+import sys
 
 GUESS_COUNT = 10
 DEFAULT_DIGIT = 10
@@ -17,13 +18,11 @@ def generateNumber():
 def checkInput():
 
     while True:
-        print('Guess secret Number :')
         inputNumber = input()
         numberList = list(inputNumber)
         for index in range(3):
             if numberList[index] not in '0123456789':
                 return 0
-
         return inputNumber
 
 def tellClues(inputNumber,guessNumber):
@@ -32,9 +31,11 @@ def tellClues(inputNumber,guessNumber):
     numberList = list(guessNumber)
     for index in range(3):
         if inputList[index] == numberList[index]:
-            resultList.append('Pico')
-        elif inputList[index] in numberList:
             resultList.append('Fermi')
+        elif inputList[index] in numberList:
+            resultList.append('Pico')
+        else:
+            resultList.append('__')
 
     if len(resultList) == 0:
         return resultList.append('Bagels')
@@ -44,9 +45,18 @@ def tellClues(inputNumber,guessNumber):
         else:
             return ' '.join(resultList)
 
+def playAgain():
+    playAgain = input().lower()
+    if playAgain.startswith('y'):
+        return True, 0
+    elif playAgain.startswith('n'):
+        sys.exit()
+
 difficulty = ''
 checkGame = True
 guessNumber = ''
+guessTime = 0
+continute = True
 
 print('Bagels Game')
 
@@ -65,11 +75,25 @@ print('Bagels None of the digits is correct.')
 print('Pico One digit is correct but in the wrong position.')
 print('Fermi One digit is correct and in the right position.')
 
-secretNumber = generateNumber()
-print(secretNumber + ' ẩn số')
-inputNumber = checkInput()
-print(inputNumber)
-result =  tellClues(inputNumber, secretNumber)
+while True:
 
-print (result)
+    if continute:
+        secretNumber = generateNumber()
 
+    continute = False
+    print('Gues #' + str(guessTime))
+    inputNumber = checkInput()
+    result = tellClues(inputNumber, secretNumber)
+    resultFinish = result.split(' ')
+    if len(list(set(resultFinish))) == 1:
+        print('Victory')
+        print('Do you want to play again! (Yes or No)')
+        continute, guessTime = playAgain()
+
+    else:
+        print(result)
+        guessTime += 1
+
+    if guessTime == 10:
+        print('You lose!!! Do you want to play again! (Yes or No)')
+        continute, guessTime = playAgain()
