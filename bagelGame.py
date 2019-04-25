@@ -20,10 +20,13 @@ def checkInput():
     while True:
         inputNumber = input()
         numberList = list(inputNumber)
-        for index in range(3):
-            if numberList[index] not in '0123456789':
-                return 0
-        return inputNumber
+        if len(numberList) > 2 and len(numberList) <= 3:
+            for index in range(3):
+                if numberList[index] not in '0123456789':
+                    return 0
+            return inputNumber
+        else:
+            print('Input 3 digit, plz')
 
 def tellClues(inputNumber,guessNumber):
     resultList = []
@@ -41,8 +44,10 @@ def tellClues(inputNumber,guessNumber):
         return resultList.append('Bagels')
     else:
         if checkGame:
+            resultList.sort()
             return ' '.join(resultList)
         else:
+
             return ' '.join(resultList)
 
 def playAgain():
@@ -56,7 +61,7 @@ difficulty = ''
 checkGame = True
 guessNumber = ''
 guessTime = 0
-continute = True
+continued = True
 
 print('Bagels Game')
 
@@ -77,23 +82,25 @@ print('Fermi One digit is correct and in the right position.')
 
 while True:
 
-    if continute:
+    if continued:
         secretNumber = generateNumber()
 
-    continute = False
+    continued = False
     print('Gues #' + str(guessTime))
     inputNumber = checkInput()
     result = tellClues(inputNumber, secretNumber)
     resultFinish = result.split(' ')
-    if len(list(set(resultFinish))) == 1:
+    if len(list(set(resultFinish))) == 1 and list(set(resultFinish))[0] == 'Fermi':
         print('Victory')
+        print('Sercert Number : %s' %(secretNumber))
         print('Do you want to play again! (Yes or No)')
-        continute, guessTime = playAgain()
+        continued, guessTime = playAgain()
 
     else:
         print(result)
         guessTime += 1
 
-    if guessTime == 10:
+    if guessTime > 10:
+        print('Sercert Number : %s' % (secretNumber))
         print('You lose!!! Do you want to play again! (Yes or No)')
-        continute, guessTime = playAgain()
+        continued, guessTime = playAgain()
