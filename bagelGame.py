@@ -51,11 +51,12 @@ def tellClues(inputNumber,guessNumber):
             return ' '.join(resultList)
 
 def playAgain():
-    playAgain = input().lower()
-    if playAgain.startswith('y'):
-        return True, 0
-    elif playAgain.startswith('n'):
-        sys.exit()
+    while True:
+        playAgain = input().lower()
+        if playAgain.startswith('y'):
+            return True, 0
+        elif playAgain.startswith('n'):
+            sys.exit()
 
 difficulty = ''
 checkGame = True

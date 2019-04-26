@@ -47,7 +47,7 @@ def isOnBoard(x, y):
     return x >= 0 and x <= 59 and y >= 0 and y <= 14
 
 def makeMove(previousMoves):
-
+    print()
     print('Where do you want to drop the next sonar device? (0-59 0-14) (or type quit)')
     while True:
         move = input()
@@ -73,31 +73,75 @@ def checkMove(x,y,chest,board):
         if currentDistance < defaultDistance:
             defaultDistance = currentDistance
 
-        defaultDistance = round(defaultDistance)
-        position =  60 * y + x
-        if defaultDistance == 0:
-            del chest[x][y]
-            return board, 'The treasure found !!!'
+    defaultDistance = round(defaultDistance)
+    position =  60 * y + x
+    if defaultDistance == 0:
+        chest.remove([x,y])
+        board[position] = 'X'
+        return board, 'The treasure found !'
+    else:
+        if defaultDistance < 10:
+            board[position] = str(defaultDistance)
+            return board,'Distance from here to Treasure is %s' %(defaultDistance)
         else:
-            if defaultDistance < 10:
-                board[position] = str(defaultDistance)
-                return board,'Distance from here to Treasure is %s' %(defaultDistance)
-            else:
-                board[position] = 'X'
-                return board,'Out of range to Treasure'
+            board[position] = 'X'
+            return board,'Out of range to Treasure'
 
+def updateBoard(previousMove,chests,board):
+    for cx,cy in previousMove:
+        board, notification = checkMove(cx,cy,chests,board)
+    return board
 
+def playAgain():
+    while True:
+        playAgain = input().lower()
+        if playAgain.startswith('y'):
+            return True, 0
+        elif playAgain.startswith('n'):
+            sys.exit()
 
 previousMoves = []
 boardGame = setBoardData()
 drawBoard(boardGame)
 chest = randomTreasure()
+step = 20
 
 while True:
+
     x,y = makeMove(previousMoves)
     previousMoves.append([x,y])
     boardGame, notification = checkMove(x,y,chest,boardGame)
+
+    if notification == 'The treasure found !':
+        boardGame = updateBoard(previousMoves,chest,boardGame)
+
     drawBoard(boardGame)
+    print()
+    print('Last choice x: %s, y: %s' %(x,y))
     print(notification)
+    step -= 1
+
+    if len(chest) == 0:
+        print('You are victory!!! Do you want to play again! (Yes or No)')
+        playAgain()
+        previousMoves = []
+        boardGame = setBoardData()
+        drawBoard(boardGame)
+        chest = randomTreasure()
+        step = 20
+    else:
+        if step == 0:
+            print('Position of the treasure : ')
+            print(list(chest))
+            print('You lose!!! Do you want to play again! (Yes or No)')
+            playAgain()
+            previousMoves = []
+            boardGame = setBoardData()
+            drawBoard(boardGame)
+            chest = randomTreasure()
+            step = 20
+        else:
+            print('you have %s device and %s treasure, Try Again' %(step,len(chest)))
+
 
 
