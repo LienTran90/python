@@ -1,3 +1,4 @@
+#Sonar Game
 import random
 import sys
 import math
@@ -39,7 +40,6 @@ def randomTreasure():
     for index in range(3):
         values = [random.randint(0,59),random.randint(0,14)]
         treasureChest.append(values)
-
     return treasureChest
 
 def isOnBoard(x, y):
@@ -65,9 +65,7 @@ def makeMove(previousMoves):
         print('Enter a number from 0 to 59, a space, then a number from 0 to 14.')
 
 def checkMove(x,y,chest,board):
-
     defaultDistance = 100
-
     for cx,cy in chest:
         currentDistance = math.sqrt(math.pow(cx-x,2) + math.pow(cy-y,2))
         if currentDistance < defaultDistance:
