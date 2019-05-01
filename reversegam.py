@@ -72,7 +72,7 @@ def isCorner(computerMoves):
     isConrners = [(1, 1), (8, 1), (8, 8), (1, 8)]
     for corner in computerMoves:
         if corner in isConrners:
-            return corner
+            return corner[0], corner[1]
     return '0', '0'
 
 def computerChoose(boards,computers,player,computerMoves):
@@ -185,11 +185,14 @@ def checkMove(keys, chests, boards):
         while True:
             checkRow += positionX
             checkColumn += positionY
-            checkData = boards[checkRow][checkColumn]
-            if checkData == chests:
-                lstCanMove.append((positionX, positionY))
-                break
-            elif checkData == ' ':
+            if checkColumn < 8 and checkRow < 8:
+                checkData = boards[checkRow][checkColumn]
+                if checkData == chests:
+                    lstCanMove.append((positionX, positionY))
+                    break
+                elif checkData == ' ':
+                    break
+            else:
                 break
 
     return lstCanMove
