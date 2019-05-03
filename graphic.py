@@ -36,6 +36,7 @@ for rectCount in range(round(WINDOWWIDTH / 20)):
 
 # Run the game loop.
 while True:
+
     # Check for the QUIT event.
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -80,34 +81,35 @@ while True:
 
         # Check whether the box has moved out of the window.
 
-        if b['rect'].top == myRectY + 20:
-            positionX = round(b['rect'].left / 20)
+        if myRectY < b['rect'].top <= myRectY + 20:
             for index in myRectX:
-                if index == positionX * 20:
-                    myRectX.remove(positionX*20)
+                if index < round(b['rect'].left) <= index + 20:
+                    myRectX.remove(index)
                     if b['dir'] == UPLEFT:
                         b['dir'] = DOWNLEFT
                     if b['dir'] == UPRIGHT:
                         b['dir'] = DOWNRIGHT
                     break
 
-                elif b['rect'].left <= index <= b['rect'].right:
-                    myRectX.remove((positionX-1) * 20)
+                if  index + 20 <= round(b['rect'].right) < index + 40:
+                    myRectX.remove(index)
                     if b['dir'] == UPLEFT:
                         b['dir'] = DOWNLEFT
                     if b['dir'] == UPRIGHT:
                         b['dir'] = DOWNRIGHT
                     break
 
-        elif b['rect'].top < 0:
+        if b['rect'].top < 0:
+              # The box has moved past the top.
             if b['dir'] == UPLEFT:
                 b['dir'] = DOWNLEFT
             if b['dir'] == UPRIGHT:
                 b['dir'] = DOWNRIGHT
 
+
         if b['rect'].bottom == startPoint[1]:
             # The box has moved past the bottom.
-            if b['rect'].left > startPoint[0] and b['rect'].left < endPoint[0]:
+            if b['rect'].left >= startPoint[0] and b['rect'].left <= endPoint[0]:
                 if b['dir'] == DOWNLEFT:
                     b['dir'] = UPLEFT
                 if b['dir'] == DOWNRIGHT:
@@ -127,14 +129,14 @@ while True:
             if b['dir'] == UPRIGHT:
                 b['dir'] = UPLEFT
 
-        if b['rect'].bottom > startPoint[1] + 20:
+        if b['rect'].bottom > startPoint[1]:
             # The box has moved past the bottom.
             pygame.quit()
             sys.exit()
 
         # Draw the box onto the surface.
         pygame.draw.rect(windowSurface, b['color'], b['rect'])
-        pygame.draw.line(windowSurface, RED, line['startPoint'], line['endPoint'], 10)
+        pygame.draw.line(windowSurface, RED, line['startPoint'], line['endPoint'], 7)
         for index in myRectX:
             pygame.draw.rect(windowSurface, RED, pygame.Rect(index, myRectY, 20, 20))
 
