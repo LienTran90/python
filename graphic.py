@@ -80,10 +80,9 @@ while True:
             b['rect'].top -= MOVESPEED
 
         # Check whether the box has moved out of the window.
-
-        if myRectY < b['rect'].top <= myRectY + 20:
+        if b['rect'].top == myRectY:
             for index in myRectX:
-                if index < round(b['rect'].left) <= index + 20:
+                if b['rect'].colliderect(pygame.Rect(index,myRectY, 20, 20)):
                     myRectX.remove(index)
                     if b['dir'] == UPLEFT:
                         b['dir'] = DOWNLEFT
@@ -91,12 +90,15 @@ while True:
                         b['dir'] = DOWNRIGHT
                     break
 
-                if  index + 20 <= round(b['rect'].right) < index + 40:
+
+        for index in myRectX:
+            if b['rect'].colliderect(pygame.Rect(index,myRectY, 20, 20)):
+                if b['rect'].bottom <= myRectY +10:
                     myRectX.remove(index)
-                    if b['dir'] == UPLEFT:
-                        b['dir'] = DOWNLEFT
-                    if b['dir'] == UPRIGHT:
-                        b['dir'] = DOWNRIGHT
+                    if b['dir'] == DOWNLEFT:
+                        b['dir'] = UPLEFT
+                    if b['dir'] == DOWNRIGHT:
+                        b['dir'] = UPRIGHT
                     break
 
         if b['rect'].top < 0:
@@ -109,7 +111,7 @@ while True:
 
         if b['rect'].bottom == startPoint[1]:
             # The box has moved past the bottom.
-            if b['rect'].left >= startPoint[0] and b['rect'].left <= endPoint[0]:
+            if b['rect'].right >= startPoint[0] or b['rect'].left <= endPoint[0]:
                 if b['dir'] == DOWNLEFT:
                     b['dir'] = UPLEFT
                 if b['dir'] == DOWNRIGHT:
